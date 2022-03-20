@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Create New Tweets{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{url_for('tweet.create_tweet') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% for tweet_type in tweet_types %}
+<h1>{{tweet_type}} Tweets</h1>
+  {% for tweet in tweets %}
+  {% if tweet['tw_type'] == tweet_type %}
+    <article class="post">
+      <header>
+        <div>
+          <h3>Description: {{ tweet['tw_memo'] }}</h3>
+          <h3>Random tweet setting: {{tweet['tw_rdm']}}</h3>
+          {% if tweet['tw_type'] == "Weekly" or tweet['tw_type'] == "Weather" %}
+          <h3>Tweet day: {{ tweet['tw_dow'] }}</h3>
+          {% endif %}
+          <h3>Tweet time: {{ tweet['tw_time'] }}</h3>
+          {% if tweet['tw_type'] == "Weather" %}
+          <h3>Weather Condition: {{ tweet['weather_condition'] }}</h3>
+          <h3>Temperature Condition: {{ tweet['temp_condition'] }} ℃</h3>
+          {% endif %}
+        </div>
+          <a class="action" href="{{ url_for('tweet.update', id=tweet['id']) }}">Edit</a>
+      </header>
+      <p class="body">{{ tweet['body'] }}</p>
+      <hr>
+    </article>
+    {% endif %}
+    {% if not loop.last %}
+    {% endif %}
+  {% endfor %}
+{%endfor%}
+    <form action="{{ url_for('tweet.delete_all') }}" method="post">
+      <input class="danger" type="submit" value="Delete All Tweet Schedules" onclick="return confirm('All tweet schedules will be deleted. This action is not recoverable. Are you sure?');">
+    </form>
+{% endblock %}

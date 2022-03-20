@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Edit Tweet {{ tweet['tw_time'] }} {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+      <div class="{{ category }}">{{ message }}</div>
+  {% endfor %}
+    <form method="post">
+    <p>
+    <label for="tw_memo">Description(option)</label>
+    <textarea name="tw_memo" id="tw_memo" >{{ request.form['tw_memo'] or tweet['tw_memo'] }}</textarea>
+    </p>
+    {% if tweet['tw_type'] == "Weekly" or tweet['tw_type'] == "Weather" %}
+    <p>
+    <label for="tw_dow">Tweet Day</label>
+    <select name="tw_dow" id="tw_dow"
+      value="{{ request.form['tw_dow'] or tweet['tw_dow'] }}" required>
+      <option hidden> {{ tweet['tw_dow'] }}</option>
+      <option value="Monday">Monday</option>
+      <option value="Tuesday">Tuesday</option>
+      <option value="Wednesday">Wednesday</option>
+      <option value="Thursday">Thursday</option>
+      <option value="Friday">Friday</option>
+      <option value="Saturday">Saturday</option>
+      <option value="Sunday">Sunday</option>
+    </select>
+    </p>
+    {% endif %}
+    <p>
+    <label for="random_setting">Tweet at random time setting<br></label>
+      If you choose "Random Hour" or "Random Minute" or Ramdom Hour&Minute, hour/minute data of specified TweetTime will be ignored. <br>
+    <input type="radio" name="random_setting" value="random_hour" {{ rdm_setting1 }}>Random Hour
+    <input type="radio" name="random_setting" value="random_minute" {{ rdm_setting2 }}>Random Minute
+    <input type="radio" name="random_setting" value="random_hour_minute" {{ rdm_setting3 }}>Random Hour&Minute
+    <input type="radio" name="random_setting" value="not_random" {{ rdm_setting4 }}>Not Random(tweet at fixed time)
+    </p>
+
+    <p>
+    <label for="tw_time">Tweet time</label>
+    <input type="time" id="tw_time" name="tw_time" min="00:00" max="23:59" value="{{ request.form['tw_time'] or tweet['tw_time'] }}" required>
+    </p>
+    {% if tweet['tw_type'] == "Weather" %}
+    <p>
+    <label for="weather_condition">WeatherCondition@Shibuya</label>
+    <select name="weather_condition" id="weather_condition"
+      value="{{ request.form['weather_condition'] or tweet['weather_condition'] }}" required>
+      <option hidden>{{ tweet['weather_condition'] }}</option>
+      <option value="Clear">Sunny</option>
+      <option value="Clouds">Cloudy</option>
+      <option value="Rainy">Rainy</option>
+      <option value="Others">Others</option>
+      <option value="">NoWeatherCondition</option>
+    </select>
+    </p>
+
+    <p>
+    <label for="temp_condition">TemperatureCondition@Shibuya</label>
+    <select name="temp_condition" id="temp_condition"
+      value="{{ request.form['temp_condition'] or tweet['temp_condition'] }}" required>
+      <option hidden>{{ tweet['temp_condition'] }}</option>
+      <option value="below5">Below 5℃</option>
+      <option value="5-10">Between 5℃-10℃</option>
+      <option value="10-15">Between 10℃-15℃</option>
+      <option value="15-20">Between 15℃-20℃</option>
+      <option value="20-25">Between 20℃-25℃</option>
+      <option value="25-30">Between 25℃-30℃</option>
+      <option value="over30">Over 30℃</option>
+      <option value="">NoTempCondition</option>
+    </select>
+    </p>
+    {% endif %}
+
+    <label for="tweet1">Tweet1</label>
+    <textarea name="tweet1" id="tweet1" onkeyup="ShowLength(value,'inputlength1');">{{request.form['tweet1'] or tweet['tweet1']}}</textarea>
+      <p id="inputlength1">Characters: 0</p>
+
+    <label for="tweet2">Tweet2</label>
+    <textarea name="tweet2" id="tweet2" onkeyup="ShowLength(value,'inputlength2');">{{ request.form['tweet2'] or tweet['tweet2'] }}</textarea>
+      <p id="inputlength2">Characters: 0</p>
+
+    <label for="tweet3">Tweet3</label>
+    <textarea name="tweet3" id="tweet3" onkeyup="ShowLength(value,'inputlength3');">{{ request.form['tweet3'] or tweet['tweet3'] }}</textarea>
+      <p id="inputlength3">Characters: 0</p>
+
+    <label for="tweet4">Tweet4</label>
+    <textarea name="tweet4" id="tweet4" onkeyup="ShowLength(value,'inputlength4');">{{ request.form['tweet4'] or tweet['tweet4'] }}</textarea>
+      <p id="inputlength4">Characters: 0</p>
+
+    <label for="tweet5">Tweet5</label>
+    <textarea name="tweet5" id="tweet5" onkeyup="ShowLength(value,'inputlength5');">{{ request.form['tweet5'] or tweet['tweet5'] }}</textarea>
+      <p id="inputlength5">Characters: 0</p>
+
+    <label for="tweet6">Tweet6</label>
+    <textarea name="tweet6" id="tweet6" onkeyup="ShowLength(value,'inputlength6');">{{ request.form['tweet6'] or tweet['tweet6'] }}</textarea>
+      <p id="inputlength6">Characters: 0</p>
+
+    <label for="tweet7">Tweet7</label>
+    <textarea name="tweet7" id="tweet7" onkeyup="ShowLength(value,'inputlength7');">{{ request.form['tweet7'] or tweet['tweet7'] }}</textarea>
+      <p id="inputlength7">Characters: 0</p>
+
+    <label for="tweet8">Tweet8</label>
+    <textarea name="tweet8" id="tweet4" onkeyup="ShowLength(value,'inputlength8');">{{ request.form['tweet8'] or tweet['tweet8'] }}</textarea>
+      <p id="inputlength8">Characters: 0</p>
+
+    <label for="tweet9">Tweet9</label>
+    <textarea name="tweet9" id="tweet9" onkeyup="ShowLength(value,'inputlength9');">{{ request.form['tweet9'] or tweet['tweet9'] }}</textarea>
+      <p id="inputlength9">Characters: 0</p>
+
+    <label for="tweet10">Tweet10</label>
+    <textarea name="tweet10" id="tweet10" onkeyup="ShowLength(value,'inputlength10');">{{ request.form['tweet10'] or tweet['tweet10'] }}</textarea>
+      <p id="inputlength10">Characters: 0</p>
+
+    <script>
+      function ShowLength(str,resultid){
+        if(str.length <= 140){
+          document.getElementById(resultid).innerHTML = "Characters: " + str.length;
+          document.getElementById(resultid).style.color = "black";
+        }else if (140 < str.length &&  str.length<= 280){
+          document.getElementById(resultid).innerHTML = "Over140characters(JapaneseLimit)";
+          document.getElementById(resultid).style.color = "orange";
+        }else{
+          document.getElementById(resultid).innerHTML = "Over280characters(EnglishLimit)";
+          document.getElementById(resultid).style.color = "red";
+          }
+        }
+    </script>
+      <input type="submit" value="Save All">
+  </form>
+    <form action="{{ url_for('tweet.delete', id=tweet['id']) }}" method="post">
+      <input class="danger" type="submit" value="Delete Tweet Schedule" onclick="return confirm('Are you sure?');">
+    </form>
+      <input type="button" value="Cancel" onclick="location.href='{{ url_for('tweet.index') }}'">
+{% endblock %}

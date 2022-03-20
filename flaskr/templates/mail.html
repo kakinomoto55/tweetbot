@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}{% endblock %}</h1>
+{% endblock %}
+{% block content %}
+<form method="POST">
+	{{ form.csrf_token }}
+
+	{% for error in form.mail.errors %}
+		<p style="color:red">{{ error }}</p>
+	{% endfor %}
+	{{ form.mail.label }}
+	{{ form.mail(placeholder="Email address", size=20,id="mail")}}
+
+	<button>Submit</button>
+</form>
+{% endblock %}

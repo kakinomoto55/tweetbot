@@ -1,0 +1,23 @@
+#for setting up development environment
+dev.sh
+
+#for setting up enviromnent variable
+.env
+
+#old files/directories
+old/
+
+#db
+instance/
+
+#sample file
+#flaskr/sample_file/*
+
+#uploaded file
+#flaskr/uploads/*
+
+#ShibuAI_image
+#flaskr/static/img/*
+
+
+

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if g.user %}
+    <title>Upload File</title>
+      <h1>Upload Tweet Setting File</h1>
+      <p>
+        File requirements<br>
+        file name: Shibu_Tweet.xlsx<br>
+        Max.file size:5MB<br>
+       </p>
+
+    <form method=post>
+      <input type=submit name="sample_dl" value="Sample file download">
+    </form>
+
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+    <p>※To apply the settings of uploaded file to the system, press Start Auto-Tweet button at top page.</p>
+  {% else %}
+  <h5>To upload file, please log in first.</h5>
+  {% endif %}
+{% endblock %}

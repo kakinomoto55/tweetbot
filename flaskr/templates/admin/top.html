@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+{% block header %}
+  <h1>{% block title %}TweetBot Admin Page{% endblock %}</h1>
+{% endblock %}
+{% block content %}
+  {% if g.user %}
+    <div class="tweet_status" id="display_status" value="{{tweet_status}}">
+      <form action =''>
+        <h5 align="center">{{tweet_status}}</h5>
+      </form>
+    </div>
+
+<div class="buttons_wrap_hori">
+  <div class="auto_buttons">
+  <form action ='' method='post' id='start_tweet' value="{{stt_bt_st}}">
+  <input type="submit" name = "button_run" value="Start Auto-Tweet" style="background-color:#FFCCCC;" {{stt_bt_st}}/>
+  </form>
+  <form form action ='' method='post' id='stop_tweet' value="{{stp_bt_st}}">
+  <input type="submit" name = "button_stop" value="Stop Auto-Tweet" style="background-color:#377ba8;" {{stp_bt_st}}/> 
+  </form>
+</div>
+</div>
+<div class="buttons_wrap_hori">
+  <div class="auto_buttons">
+    <form action="">
+      <input type="button" name="button_edit" value="Create New Tweet" onclick="location.href='{{ url_for('tweet.create_tweet') }}'">
+    </form>
+    <form action="">
+      <input type="button" name="button_confirm" value="Check/Edit Tweet" onclick="location.href='{{ url_for('tweet.index') }}'" >
+    </form>
+  </div>
+</div>
+<div class="disclaimer">
+  <h5>※Once Start Auto-Tweet/Stop Auto-Tweet button is clicked, all registered tweet schedules will be set/unset. </h5>
+  <h5>※To tweet unregistered content, please use Twitter app or Twitter web app</h5>
+</div>
+  <a href="https://aivision.tokyo/" target="_blank"><img src="/static/img/Shibuya_Ai_Vision.png" class="banner" alt = "渋谷愛ビジョンTOP" width="375" height="105" border="1" border-radius:10px; ></a>
+  </body>
+
+  <!--Twitter timeline-->
+  <p align="center"><a class="twitter-timeline" width="375" height="700"data-theme="light" href="https://twitter.com/shibu_mermaid?ref_src=twsrc%5Etfw">Tweets by shibu_mermaid</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+  {% endif %}
+{% endblock %}

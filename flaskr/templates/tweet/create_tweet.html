@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if g.user %}
+  <h1>Daily Tweets</h1>
+ 
+    <a class="action" href="{{ url_for('tweet.create_daily_tweet') }}">New</a>
+  
+  <h1>Weekly Tweets</h1>
+
+    <a class="action" href="{{ url_for('tweet.create_weekly_tweet') }}">New</a>
+
+  <h1>Weather Tweets</h1>
+    <a class="action" href="{{ url_for('tweet.create_weather_tweet') }}">New</a>
+
+  <h1>Upload Setting File(.xlsx only)</h1>
+    <a class="action" href="{{ url_for('tweet.upload_file') }}">Upload</a>
+  {% else %}
+  <h5>To create new post, please log in </h5>
+  {% endif %}
+{% endblock %}

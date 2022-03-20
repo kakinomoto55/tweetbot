@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}{% endblock %}</h1>
+{% endblock %}
+{% block content %}
+<form method="POST">
+	{% for message in get_flashed_messages() %}
+		<p>{{ message }}</p>
+	{% endfor %}
+
+	{{ form.csrf_token }}
+
+	<p>Email Address: {{ mail_address }}</p>
+	<p>{{ form.token() }}</p>
+	<p>
+		{% for error in form.new_pwd1.errors %}
+			<p style="color:red">{{ error }}</p>
+		{% endfor %}
+	</p>
+	<p>
+		{{ form.new_pwd1.label }}
+		{{ form.new_pwd1(placeholder="Password", size=20) }}
+	</p>
+	<p>
+		{{ form.new_pwd2.label }}
+		{{ form.new_pwd2(placeholder="Password(confirm)", size=20) }}
+	</p>
+
+	<button>Submit</button>
+</form>
+{% endblock %}

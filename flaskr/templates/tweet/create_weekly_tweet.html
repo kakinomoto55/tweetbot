@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Create New Weekly Tweet{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <h5>In this page, you can create weekly posts by specifying tweet day&time(00:00 ~ 23:59)</h5>
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+      <div class="{{ category }}">{{ message }}</div>
+    {% endfor %}
+  <form method="post">
+    <label for="tw_memo">Description(option)</label>
+    <textarea name="tw_memo" id="tw_memo" >{{ request.form['tw_memo'] }}</textarea>
+    <p>
+    <label for="tw_dow">TweetDay</label>
+    <select name="tw_dow" id="tw_dow" required>
+      <option value="Monday">Monday</option>
+      <option value="Tuesday">Tuesday</option>
+      <option value="Wednesday">Wednesday</option>
+      <option value="Thursday">Thursday</option>
+      <option value="Friday">Friday</option>
+      <option value="Saturday">Saturday</option>
+      <option value="Sunday">Sunday</option>
+    </select>
+    </p>
+
+    <p>
+    <label for="random_setting">Tweet at random time setting<br></label>
+     If you choose "Random Hour" or "Random Minute" or Ramdom Hour&Minute, hour/minute data of specified TweetTime will be ignored. <br>
+    <input type="radio" name="random_setting" value="random_hour">Random Hour
+    <input type="radio" name="random_setting" value="random_minute">Random Minute
+    <input type="radio" name="random_setting" value="random_hour_minute">Random Hour&Minute
+    <input type="radio" name="random_setting" value="not_random" checked>Not Random(tweet at fixed time)
+    </p>
+
+    <p>
+    <label for="tw_time">TweetTime(tweets at specified time every week)</label>
+    <input type="time" id="tw_time" name="tw_time"
+       min="00:00" max="23:59" required>
+    </p>
+    <p>
+    {% for i in range(1,11)%}
+    <label for="tweet{{i}}">Tweet{{i}}</label>
+    <textarea name="tweet{{i}}" id="tweet{{i}}" onkeyup="ShowLength(value,'inputlength{{i}}');">{{ request.form['tweet{{i}}'] }}</textarea>
+    <p id="inputlength{{i}}">Characters: 0</p>
+    {% endfor %}
+    </p>
+    <script>
+      function ShowLength(str,resultid){
+        if(str.length <= 140){
+          document.getElementById(resultid).innerHTML = "Characters: " + str.length;
+          document.getElementById(resultid).style.color = "black";
+        }else if (140 < str.length &&  str.length<= 280){
+          document.getElementById(resultid).innerHTML = "Over140characters(JapaneseLimit)";
+          document.getElementById(resultid).style.color = "orange";
+        }else{
+          document.getElementById(resultid).innerHTML = "Over280characters(EnglishLimit)";
+          document.getElementById(resultid).style.color = "red";
+          }
+        }
+    </script>
+    <div class="buttons_wrap_hori">
+      <div class="auto_buttons">
+        <input type="submit" value="Save">
+        <input type="submit" value="Cancel" onclick="location.href='{{ url_for('tweet.index') }}'">
+      </div>
+    </div>
+  </form>
+
+{% endblock %}
