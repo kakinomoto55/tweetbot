@@ -7,6 +7,7 @@ def create_app(test_config=None):
     mail = Mail()
     app.config.from_mapping(
         SECRET_KEY = os.getenv("SECRET_KEY"),
+        #SECRET_KEY = '\xda\x97\x1c\x8e[\xaa\xfb\x8a\x12M\x7fsM\xbci\xac\x18\xfc\xd5\xc0\xb8n<\xc3',
         DATABASE = os.path.join(app.instance_path,'flaskr.sqlite3'),
         )
     #for file uploading feature
@@ -46,3 +47,4 @@ def create_app(test_config=None):
     app.add_url_rule('/',endpoint='index')
 
     return app
+

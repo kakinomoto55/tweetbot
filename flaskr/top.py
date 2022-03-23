@@ -26,9 +26,9 @@ from flask.cli import with_appcontext
 
 bp = Blueprint('top', __name__, url_prefix='/')
 
-@bp.route('/admin/index')
+@bp.route('/')
 def index():
-    return render_template('admin/index.html')
+    return render_template('index.html')
 
 @bp.route('/admin/top', methods=['GET']) 
 @login_required
@@ -82,9 +82,9 @@ def TweetBot():
         if request.form.get('button_run') == 'Start Auto-Tweet':
             tweet_status = "Running Auto-Tweet"
             print("tweet_status=",tweet_status)
-            python3=os.getenv("PYTHON3")
+            #python3=os.getenv("PYTHON3")
             WeatherTweet=os.getenv("WEATHERTWEET")
-            p = subprocess.Popen([python3,WeatherTweet])
+            p = subprocess.Popen(['python3',WeatherTweet])
             print("WeatherTweet.py started.")
             stt_bt_st = "disabled"
             stp_bt_st = ""
@@ -208,3 +208,5 @@ class NewPwdForm(flask_wtf.FlaskForm):
 
 if __name__ == "__main__":
     bp.run()
+#    port = int(os.getenv('PORT', 5000))
+#    bp.run(debug=True, host='127.0.0.1', port=port)
