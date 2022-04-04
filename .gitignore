@@ -11,13 +11,33 @@ old/
 instance/
 
 #sample file
-#flaskr/sample_file/*
+flaskr/sample_file/
 
 #uploaded file
-#flaskr/uploads/*
+flaskr/uploads/
 
 #ShibuAI_image
-#flaskr/static/img/*
+flaskr/static/img/
 
+#ShibuAI_template
+flaskr/templates/
 
+#cache
+flaskr/__pycache__/
+
+#access log
+access.log
+
+#ssl certification
+fullchain.crt
+iv.tailorinnovations.com.key
+
+#gunicorn config
+config/
+
+#cache
+__pycache__/
+
+#pip install requirements
+requirements.txt
 

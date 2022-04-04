@@ -27,6 +27,5 @@ schedule==1.1.0
 SQLAlchemy==1.4.31
 tweepy==4.5.0
 urllib3==1.26.8
-waitress==2.1.1
 Werkzeug==2.0.2
-WTForms==3.0.1
+#WTForms==3.0.1

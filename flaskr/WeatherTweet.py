@@ -79,22 +79,6 @@ class WeatherTweet():
                 r_tpl += (ws.cell(row,col).value, )
             r_lst.append(r_tpl)
 
-        ##conversion from jst to utc
-        #extract first 2digit of r_lst(jst_h)
-        jst = [i[4] for i in r_lst]
-        jst_h = [j[:j.find(":")] for j in jst]
-        utc_m = [k[-2:] for k in jst]
-        utc_h = [ str(int(l)+15) if int(l) <= 8 else str(int(l)-9).zfill(2) for l in jst_h]
-        utc = []
-        for m in range(0,len(r_lst)):
-            utc.append(utc_h[m] + ":" + utc_m[m])
-        print("utc=",utc)
-        ##end conversion jst to utc
-        #replace tw_time date with utc
-        for o in range(0,len(r_lst)):
-            tmp1 = list(r_lst[o])
-            tmp1[4] = utc[o]
-            r_lst[o] = tuple(tmp1)
         for row in range(0, ws.max_row - 2):
             conn = sqlite3.connect(DB_PATH)
             c = conn.cursor()
@@ -170,6 +154,32 @@ class WeatherTweet():
             tw_post=[]
             for i in range(8,18):
                 tw_post.append(row[i])
+
+            ###conversion from jst to utc
+            #if jst_h <= 8 utc_h=jst_h+15, if jst_h => 9 utc_h=jst_h-9
+            if int(tw_hour) <= 8:
+                utc_h = str(int(tw_hour)+15)
+            else:
+                utc_h = str(int(tw_hour)-9).zfill(2)
+            w_list = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+            if tw_dow is None:
+                pass
+            elif tw_dow == '':
+                pass
+            elif tw_dow == 'Monday':
+                if int(tw_hour) <= 8:
+                    utc_dow = 'Sunday'
+                else:
+                    utc_dow = 'Monday'
+                tw_dow = utc_dow
+            else:
+                if int(tw_hour) <= 8:
+                    utc_dow = w_list[(w_list.index(tw_dow))-1]
+                else:
+                    utc_dow = tw_dow
+                tw_dow = utc_dow
+            tw_time = utc_h + ":" + tw_minute
+            tw_hour = utc_h
 
             if row[1]=="Daily":
                 #daily post(random_hour)

@@ -33,7 +33,10 @@ def index():
 @bp.route('/admin/top', methods=['GET']) 
 @login_required
 def top():
-    result = subprocess.run(['ps'], stdout=subprocess.PIPE)
+    #result = subprocess.run(['ps'], stdout=subprocess.PIPE)
+    result = subprocess.run(['ps aux | grep "python"'], stdout=subprocess.PIPE, shell=True)
+    #result = subprocess.run(['ps aux | grep "python" | grep "WeatherTweet.py"'], stdout=subprocess.PIPE, shell = True)
+    #print("result.stdout1=",result.stdout)
     if "WeatherTweet.py" in str(result.stdout):
         running = True
         tweet_status = "Running Auto-Tweet"
@@ -68,9 +71,11 @@ def TweetBot():
     ).fetchall()
 
     #check WeatherTweet.py's running status
-    result = subprocess.run(['ps'], stdout=subprocess.PIPE)
+    result = subprocess.run(['ps aux | grep "python"'], stdout=subprocess.PIPE, shell=True) 
+    #result = subprocess.run(['ps aux | grep "python" | grep "WeatherTweet.py"'], stdout=subprocess.PIPE, shell = True) 
     stt_bt_st = ""
     stp_bt_st = ""
+    #print("result.stdout2=",result.stdout)
     if "WeatherTweet.py" in str(result.stdout):
         running = True
     else: running = False 
@@ -104,6 +109,11 @@ def TweetBot():
             tmp3 = str(tmp2.stdout).replace("b'", "")
             tmp4 = tmp3.replace("'", "")
             pid = int(tmp4)
+            #print("tmp1=",tmp1)
+            #print("tmp2=",tmp2)
+            #print("tmp3=",tmp3)
+            #print("tmp4=",tmp4)
+            #print("pid=",pid)
             p=psutil.Process(pid)
             p.terminate()
             print("WeatherTweet.py is tereminated.")
@@ -134,7 +144,7 @@ def reset():
     # ask users to input email address
     # and let them URL for password-reset
     if request.method == 'POST' and form.validate_on_submit():
-    #TODO check db whether the address exists
+    # check db whether the address exists
         db = get_db()
         rows = db.execute(
             ' SELECT * FROM user WHERE username = ? LIMIT 1 ',
@@ -144,8 +154,8 @@ def reset():
         #generate token using create_token method
             token = create_token(form.mail.data, bp.secret_key,SALT)
             url = url_for('top.new_pwd', token=token, _external= True)
-            #TODO send email
-            msg = Message(subject="Password Reset",sender="1te12579y@gmail.com", recipients=[email])
+            # send email
+            msg = Message(subject="Password Reset",sender=os.getenv("SENDER"), recipients=[email])
             msg.html = render_template('email_content.html', url=url)
 
             with mail.connect() as conn:
@@ -160,7 +170,6 @@ def reset():
 @bp.route('/forgot_pass/new_pwd', methods=['GET','POST'])
 def new_pwd():
     #set new password
-    #TODO
     if request.method == 'GET':
         #get email address
         try:
@@ -205,6 +214,10 @@ class NewPwdForm(flask_wtf.FlaskForm):
     token = wtforms.HiddenField('token',[validators.InputRequired()])
     new_pwd1 = wtforms.PasswordField('password', [validators.EqualTo('new_pwd2')])
     new_pwd2 = wtforms.PasswordField('password(confirm)',[validators.InputRequired()])
+#for SSL acme-challenge
+@bp.route('/.well-known/acme-challenge/<filename>')
+def acme_challenge(filename):
+    return render_template('.well-known/acme-challenge/'+filename)
 
 if __name__ == "__main__":
     bp.run()
