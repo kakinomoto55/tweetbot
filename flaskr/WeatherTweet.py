@@ -38,7 +38,10 @@ class Tweet():
     recent_posts_tmp = api.user_timeline()[:5]
     recent_posts=[]
     for i in range(5):
-        recent_posts.append(recent_posts_tmp[i]._json["text"])
+        try:
+            recent_posts.append(recent_posts_tmp[i]._json["text"])
+        except IndexError:
+            break
     #init
     def __init__(self,post):
         pass
