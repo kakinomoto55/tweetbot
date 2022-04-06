@@ -1,4 +1,4 @@
-#!/Users/tkyk/Tailor/tweetbot/venv/bin/python3
+#!/home/opc/tweetbot/tweetbot/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
